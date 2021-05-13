@@ -16,17 +16,16 @@ pub fn temp_item_json() -> String {
 }
 
 pub fn update_db() -> HashMap<String, String> {
-    // let client = reqwest::blocking::Client::new();
-    // let url = format!(
-    //     "https://quiet-shape-5120.heroku11451.workers.dev/v1/items",
-    // );
-    // let res = client.get(url).header("Language", "zh-hans").send().unwrap().text().unwrap();
-
-    let res = temp_item_json();
+    let client = reqwest::blocking::Client::new();
+    let url = format!(
+        "https://quiet-shape-5120.heroku11451.workers.dev/v1/items",
+    );
+    let res = client.get(url).header("Language", "zh-hans").send().unwrap().text().unwrap();
+    // let res = temp_item_json();
     let v: Value = serde_json::from_str(&res).unwrap();
 
     let db_hash = json_2_hash(v.to_string());
-
+    println!("更新完成");
     db_hash
 }
 
