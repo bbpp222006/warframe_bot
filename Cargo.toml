@@ -1,0 +1,18 @@
+[package]
+name = "warframe_bot"
+version = "0.1.0"
+authors = ["glider110 <1026316503@qq.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+
+[dependencies]
+url = {version="2.2.1"}
+websocket={version=""}
+serde_json = ""
+crossbeam =""
+reqwest = { version = "0.11", features = ["blocking", "json"] }
+num-format = ""
+regex = "1"
+strsim = "0.10.0"
