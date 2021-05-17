@@ -81,7 +81,7 @@ pub fn get_rank(all_item_dic: &HashMap<String, String>, name: &str) -> Vec<(Stri
     b
 }
 
-pub fn get_single_price(item_name: &str) -> Vec<(String, String, String)> {
+pub fn get_single_price(item_name: &str) -> Vec<(String, String, u64)> {
     println!("get请求查询：{}", item_name);
     let client = reqwest::blocking::Client::new();
     let url = format!(
@@ -92,7 +92,7 @@ pub fn get_single_price(item_name: &str) -> Vec<(String, String, String)> {
     let v: Value = serde_json::from_str(&res).unwrap();
 
     // println!("返回json：{}", v);
-    let mut buy_hash: Vec<(String, String, String)> = v["payload"]["orders"]
+    let mut buy_hash: Vec<(String, String, u64)> = v["payload"]["orders"]
         .as_array()
         .unwrap()
         .into_iter()
@@ -106,7 +106,7 @@ pub fn get_single_price(item_name: &str) -> Vec<(String, String, String)> {
             (
                 value["user"]["ingame_name"].as_str().unwrap().to_string(),
                 value["user"]["status"].as_str().unwrap().to_string(),
-                value["platinum"].as_f64().unwrap().to_string(),
+                value["platinum"].as_f64().unwrap() as u64,
             )
         })
         .collect();
@@ -116,7 +116,7 @@ pub fn get_single_price(item_name: &str) -> Vec<(String, String, String)> {
     buy_hash
 }
 
-pub fn pretty_str(price_vec: Vec<(String, String, String)>, name: &str) -> Option<String> {
+pub fn pretty_str(price_vec: Vec<(String, String, u64)>, name: &str) -> Option<String> {
     let mut defalt_translate = HashMap::new();
 
     defalt_translate.insert("ingame", "游戏中");
@@ -126,7 +126,7 @@ pub fn pretty_str(price_vec: Vec<(String, String, String)>, name: &str) -> Optio
         return None;
     }
 
-    let mut return_str = String::from(format!("{} 查询结果\n", name));
+    let mut return_str = String::from(format!("{} 查询结果", name));
 
     for (num, (ingame_name, status, platinum)) in price_vec.into_iter().enumerate() {
         if num > 10 {
@@ -134,7 +134,7 @@ pub fn pretty_str(price_vec: Vec<(String, String, String)>, name: &str) -> Optio
         }
         println!("{:?}", status);
         return_str.push_str(&format!(
-            "{}  {}  {}\n",
+            "\n{}  {}  {}",
             ingame_name, defalt_translate[&status as &str], platinum
         ));
     }

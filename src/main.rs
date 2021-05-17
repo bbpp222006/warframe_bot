@@ -17,8 +17,8 @@ fn temp_order_json()->String{
 
 fn main() {
     thread::sleep(Duration::from_secs(1)); //延时5s启动
-    // let ws_url =env::var("WS").unwrap();
-    let ws_url = "ws://106.15.91.156:6700"; //"ws://10.243.184.136:30010";
+    let ws_url =env::var("WS").unwrap();
+    // let ws_url = "ws://10.243.184.136:30010"; //"ws://10.243.184.136:30010";
 
     let (socket_send_tx, message_out) = util::create_socket_channel(&ws_url);
     let (update_sig_tx, update_sig_rx) = bounded(1);
